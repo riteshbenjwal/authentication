@@ -1,7 +1,7 @@
 const express = require("express");
 require("dotenv").config();
 require("./config/database").connect();
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 const User = require("./model/user");
@@ -21,7 +21,7 @@ app.post("/register", async (req, res) => {
       res.status(400).send("All fields are required");
     }
   
-    const existingUser = await Users.findOne({ email });
+    const existingUser = await User.findOne({ email });
   
     if (existingUser) {
       res.status(401).send("User already Exists");
@@ -50,6 +50,8 @@ app.post("/register", async (req, res) => {
     //Update or not in db
 
     //Todo Handle Password situation
+    user.password = undefined;
+    
   
     res.status(201).json(user); 
   }catch(err){
