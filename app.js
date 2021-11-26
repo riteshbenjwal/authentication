@@ -7,6 +7,7 @@ var cookieParser = require("cookie-parser");
 const User = require("./model/user");
 const auth = require("./middleware/auth");
 
+
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
@@ -106,6 +107,12 @@ app.post("/login", async (req, res) => {
 
 app.get("/dashboard", auth, (req, res) => {
   res.send("Welcome to secret information");
+});
+
+app.get("/logout", (req, res) => {
+  res.clearCookie("token");
+  res.send("You are signed out");
+ 
 });
 
 module.exports = app;
